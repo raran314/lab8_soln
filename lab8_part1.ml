@@ -25,11 +25,11 @@ computation.
 Intervals come up in many different contexts. As a concrete example,
 calendars need to associate events with time intervals (3-4pm or
 11:30am-3:30pm). Intervals can be empty (like the interval starting at
-4pm and ending at 3pm; it contains no time at all). We might want to
-know if a value is contained within an interval. (For example, 4pm is
-not contained within 11:30am-3:30pm, but is contained within 2-5pm.)
-We may want to know the intersection of two intervals. (The
-intersection of 3-4pm and 11:30am-3:30pm is 3-3:30pm.)
+4pm and ending at the previous 3pm; it contains no time at all). We
+might want to know if a value is contained within an interval. (For
+example, 4pm is not contained within 11:30am-3:30pm, but is contained
+within 2-5pm.)  We may want to know the intersection of two
+intervals. (The intersection of 3-4pm and 11:30am-3:30pm is 3-3:30pm.)
 
 Importantly, intervals can be defined over different data types. For
 instance you may want to use intervals over floating point values or,
@@ -125,12 +125,15 @@ module MakeInterval (Endpoint : ORDERED_TYPE) =
     (* intersect intvl1 intvl2 -- Returns the intersection of `intvl1`
        and `intvl2` *)
     let intersect (intvl1 : interval) (intvl2 : interval) : interval =
-      let ordered x y = if Endpoint.compare x y <= 0 then x, y else y, x in
+      let ordered x y = 
+        if Endpoint.compare x y <= 0 then x, y
+        else y, x in
       match intvl1, intvl2 with
       | Empty, _
       | _, Empty -> Empty
       | Interval (low1, high1), Interval (low2, high2) ->
-         let (_, low), (high, _)  = ordered low1 low2, ordered high1 high2 in
+         let (_, low), (high, _)
+           = ordered low1 low2, ordered high1 high2 in
          create low high
     end ;;
 

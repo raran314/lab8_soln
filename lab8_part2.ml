@@ -152,7 +152,7 @@ module IntSerialize : (SERIALIZE with type t = int) =
   end ;;
 
 module IntStack : (STACK with type element = IntSerialize.t) =
-  MakeStack(IntSerialize) ;;
+  MakeStack (IntSerialize) ;;
 
 (* It might be a good exercise to drop one or another of the sharing
    constraints, or of the module typings, and see what happens. *)
@@ -180,7 +180,7 @@ the string will be made up of alphanumeric characters only.
     
 module IntStringSerialize =
   struct
-    type t = (int * string)
+    type t = int * string
     let serialize (n, s) =
       "(" ^ string_of_int n ^ ",'" ^ s ^ "')"
   end ;;
